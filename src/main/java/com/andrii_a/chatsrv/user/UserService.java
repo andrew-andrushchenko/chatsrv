@@ -15,7 +15,7 @@ public class UserService {
 
     public void saveUser(UserDto userDto) {
         UserDocument userDocument = new UserDocument();
-        userDocument.setNickName(userDto.nickname());
+        userDocument.setNickName(userDto.nickName());
         userDocument.setFullName(userDto.fullName());
         userDocument.setStatus(UserStatus.ONLINE);
 
@@ -23,7 +23,7 @@ public class UserService {
     }
 
     public void disconnect(UserDto userDto) {
-        var storedUser = userRepository.findById(userDto.nickname()).orElse(null);
+        var storedUser = userRepository.findById(userDto.nickName()).orElse(null);
         if (storedUser != null) {
             storedUser.setStatus(UserStatus.OFFLINE);
             userRepository.save(storedUser);

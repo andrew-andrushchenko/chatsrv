@@ -7,7 +7,7 @@ public class UserMapper {
 
     public UserDocument mapToDocument(UserDto other) {
         UserDocument document = new UserDocument();
-        document.setNickName(other.nickname());
+        document.setNickName(other.nickName());
         document.setFullName(other.fullName());
         document.setStatus(other.status());
         return document;
