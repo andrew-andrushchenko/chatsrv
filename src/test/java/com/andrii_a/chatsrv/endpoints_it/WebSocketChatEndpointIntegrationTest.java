@@ -65,7 +65,7 @@ public class WebSocketChatEndpointIntegrationTest {
                 .get(1, TimeUnit.SECONDS);
 
         String recipientId = "alex";
-        stompSession.subscribe(getSubscribeMessageEndpoint(recipientId), new AddUserStompFrameHandler());
+        stompSession.subscribe(getSubscribeMessageEndpoint(recipientId), new AddChatMessageStompFrameHandler());
 
         ChatMessage chatMessage = ChatMessage.builder()
                 .id("id0")
@@ -97,7 +97,7 @@ public class WebSocketChatEndpointIntegrationTest {
         return transports;
     }
 
-    private class AddUserStompFrameHandler implements StompFrameHandler {
+    private class AddChatMessageStompFrameHandler implements StompFrameHandler {
         @Override
         @NonNull
         public Type getPayloadType(@NonNull StompHeaders stompHeaders) {
