@@ -14,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Builder
 @Document
-public class ChatMessageDocument {
+public class ChatMessage {
     @Id
     private String id;
     private String chatId;

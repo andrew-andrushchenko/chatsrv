@@ -6,30 +6,24 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class ChatMessageService {
     private final ChatMessageRepository chatMessageRepository;
     private final ChatRoomService chatRoomService;
-    private final ChatMessageMapper chatMessageMapper;
 
-    public ChatMessageDto save(ChatMessageDto chatMessage) {
+    public ChatMessage save(ChatMessage chatMessage) {
         var chatId = chatRoomService
-                .getChatRoomId(chatMessage.senderId(), chatMessage.recipientId(), true)
+                .getChatRoomId(chatMessage.getSenderId(), chatMessage.getRecipientId(), true)
                 .orElseThrow(); // You can create your own dedicated exception
-        ChatMessageDocument chatMessageDocument = chatMessageMapper.mapToDocument(chatMessage);
-        chatMessageDocument.setChatId(chatId);
-        chatMessageRepository.save(chatMessageDocument);
+        chatMessage.setChatId(chatId);
+        chatMessageRepository.save(chatMessage);
         return chatMessage;
     }
 
-    public List<ChatMessageDto> findChatMessages(String senderId, String recipientId) {
+    public List<ChatMessage> findChatMessages(String senderId, String recipientId) {
         var chatId = chatRoomService.getChatRoomId(senderId, recipientId, false);
-        return chatId.map(id -> {
-            List<ChatMessageDocument> chatRoomDocumentList = chatMessageRepository.findByChatId(id);
-            return chatRoomDocumentList.stream().map(chatMessageMapper::mapToDto).collect(Collectors.toList());
-        }).orElse(new ArrayList<>());
+        return chatId.map(chatMessageRepository::findByChatId).orElse(new ArrayList<>());
     }
 }

@@ -18,8 +18,8 @@ public class UserController {
 
     @MessageMapping("/user.addUser")
     @SendTo("/user/public")
-    public UserDto addUser(
-            @Payload UserDto user
+    public User addUser(
+            @Payload User user
     ) {
         userService.saveUser(user);
         return user;
@@ -27,15 +27,15 @@ public class UserController {
 
     @MessageMapping("/user.disconnectUser")
     @SendTo("/user/public")
-    public UserDto disconnectUser(
-            @Payload UserDto user
+    public User disconnectUser(
+            @Payload User user
     ) {
         userService.disconnect(user);
         return user;
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<UserDto>> findConnectedUsers() {
+    public ResponseEntity<List<User>> findConnectedUsers() {
         return ResponseEntity.ok(userService.findConnectedUsers());
     }
 }

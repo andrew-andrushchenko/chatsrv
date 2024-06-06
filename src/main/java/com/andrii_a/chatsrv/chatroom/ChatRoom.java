@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @Builder
 @Document
-public class ChatRoomDocument {
+public class ChatRoom {
     @Id
     private String id;
     private String chatId;

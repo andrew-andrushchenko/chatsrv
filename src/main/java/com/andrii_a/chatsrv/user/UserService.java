@@ -4,34 +4,27 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
-    private final UserMapper userMapper;
+    private final UserRepository repository;
 
-    public void saveUser(UserDto userDto) {
-        UserDocument userDocument = new UserDocument();
-        userDocument.setNickName(userDto.nickName());
-        userDocument.setFullName(userDto.fullName());
-        userDocument.setStatus(UserStatus.ONLINE);
-
-        userRepository.save(userDocument);
+    public void saveUser(User user) {
+        user.setStatus(UserStatus.ONLINE);
+        repository.save(user);
     }
 
-    public void disconnect(UserDto userDto) {
-        var storedUser = userRepository.findById(userDto.nickName()).orElse(null);
+    public void disconnect(User user) {
+        var storedUser = repository.findById(user.getNickName()).orElse(null);
         if (storedUser != null) {
             storedUser.setStatus(UserStatus.OFFLINE);
-            userRepository.save(storedUser);
+            repository.save(storedUser);
         }
     }
 
-    public List<UserDto> findConnectedUsers() {
-        return userRepository.findAllByStatus(UserStatus.ONLINE).stream().map(userMapper::mapToDto).collect(Collectors.toList());
+    public List<User> findConnectedUsers() {
+        return repository.findAllByStatus(UserStatus.ONLINE);
     }
-
 }
