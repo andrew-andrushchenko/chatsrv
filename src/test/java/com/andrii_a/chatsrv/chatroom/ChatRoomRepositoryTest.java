@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @DataMongoTest
 class ChatRoomRepositoryTest {
@@ -63,12 +64,14 @@ class ChatRoomRepositoryTest {
 
         Optional<ChatRoom> senderRecipientOptional = chatRoomRepository.findBySenderIdAndRecipientId(senderId, recipientId);
         assertThat(senderRecipientOptional.isPresent()).isTrue();
-        assertThat(senderRecipientOptional.get()).isEqualTo(senderRecipient);
+        senderRecipientOptional.ifPresent(chatRoom -> assertEquals(chatRoom, senderRecipient));
 
         Optional<ChatRoom> recipientSenderOptional = chatRoomRepository.findBySenderIdAndRecipientId(recipientId, senderId);
         assertThat(recipientSenderOptional.isPresent()).isTrue();
-        assertThat(recipientSenderOptional.get()).isEqualTo(recipientSender);
 
-        assertThat(senderRecipientOptional.get().getChatId()).isEqualTo(recipientSenderOptional.get().getChatId());
+        recipientSenderOptional.ifPresent(chatRoom -> {
+            assertEquals(chatRoom, recipientSender);
+            assertEquals(chatRoom.getChatId(), recipientSender.getChatId());
+        });
     }
 }

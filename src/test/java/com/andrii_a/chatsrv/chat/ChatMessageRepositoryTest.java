@@ -79,7 +79,6 @@ class ChatMessageRepositoryTest {
         chatMessageRepository.save(chatMessage3);
 
         List<ChatMessage> chatMessages = chatMessageRepository.findByChatId(chatId);
-        System.out.println(chatMessages.get(0));
         assertThat(chatMessages.size()).isEqualTo(2);
     }
 }
